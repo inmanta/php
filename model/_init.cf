@@ -24,7 +24,7 @@ implementation phpApache:
     """
     php = std::Package(host = host, name = "php", state = "installed")
     
-    std::Package(host = host, name = "php-mysql", state = "installed", provides = php)    
+    std::Package(host = host, name = "php-mysqlnd", state = "installed", provides = php)    
     std::Package(host = host, name = "php-gd", state = "installed", provides = php)
     std::Package(host = host, name = "php-mbstring", state = "installed", provides = php)
 end
