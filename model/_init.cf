@@ -17,7 +17,7 @@
     Technical Contact: bart.vanbrabant@cs.kuleuven.be
 """
 
-implementation phpApache:
+implementation phpApacheRPM:
     """
         This modules installs a common set of php modules and support for webservers
         either through a plugin or a cgi like interface.
@@ -29,5 +29,18 @@ implementation phpApache:
     std::Package(host = host, name = "php-mbstring", state = "installed", provides = php)
 end
 
-implement httpd::Server using phpApache
+implementation phpApacheDEB:
+    """
+        This modules installs a common set of php modules and support for webservers
+        either through a plugin or a cgi like interface.
+    """
+    php = std::Package(host = host, name = "php5", state = "installed")
+
+    std::Package(host = host, name = "libapache2-mod-php5", state = "installed", provides = php)    
+    std::Package(host = host, name = "php5-mysqlnd", state = "installed", provides = php)    
+    std::Package(host = host, name = "php5-gd", state = "installed", provides = php)
+end
+
+implement httpd::Server using phpApacheRPM when std::familyof(host.os, "redhat")
+implement httpd::Server using phpApacheDEB when std::familyof(host.os, "ubuntu")
 
