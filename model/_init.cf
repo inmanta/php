@@ -13,19 +13,31 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
-    Contect: bart@impera.io
+    Contact: bart@impera.io
 """
+
+implementation apache for web::ApplicationContainer:
+    PHPApache(host=self.host)
+end
+
+entity PHPApache:
+    """
+        This installs the php runtime and the apache plugin
+    """
+end
+
+ip::Host host [1] -- [0:1] PHPApache php_apache
 
 implementation phpApacheRPM:
     """
         This modules installs a common set of php modules and support for webservers
         either through a plugin or a cgi like interface.
     """
-    php = std::Package(host = host, name = "php", state = "installed")
+    php = std::Package(host=host, name="php", state="installed")
     
-    std::Package(host = host, name = "php-mysqlnd", state = "installed", provides = php)    
-    std::Package(host = host, name = "php-gd", state = "installed", provides = php)
-    std::Package(host = host, name = "php-mbstring", state = "installed", provides = php)
+    std::Package(host=host, name="php-mysqlnd", state="installed", provides=php)
+    std::Package(host=host, name="php-gd", state="installed", provides=php)
+    std::Package(host=host, name="php-mbstring", state="installed", provides=php)
 end
 
 implementation phpApacheDEB:
@@ -33,13 +45,13 @@ implementation phpApacheDEB:
         This modules installs a common set of php modules and support for webservers
         either through a plugin or a cgi like interface.
     """
-    php = std::Package(host = host, name = "php5", state = "installed")
+    php = std::Package(host=host, name="php5", state="installed")
 
-    std::Package(host = host, name = "libapache2-mod-php5", state = "installed", provides = php)    
-    std::Package(host = host, name = "php5-mysqlnd", state = "installed", provides = php)    
-    std::Package(host = host, name = "php5-gd", state = "installed", provides = php)
+    std::Package(host=host, name="libapache2-mod-php5", state="installed", provides=php)    
+    std::Package(host=host, name="php5-mysqlnd", state="installed", provides=php)    
+    std::Package(host=host, name="php5-gd", state="installed", provides=php)
 end
 
-implement httpd::Server using phpApacheRPM when std::familyof(host.os, "redhat")
-implement httpd::Server using phpApacheDEB when std::familyof(host.os, "ubuntu")
+implement PHPApache using phpApacheRPM when std::familyof(host.os, "redhat")
+implement PHPApache using phpApacheDEB when std::familyof(host.os, "ubuntu")
 
