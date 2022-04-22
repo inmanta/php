@@ -1,3 +1,6 @@
+# V0.3.5
+- Remove pytest.ini and move its logic to pyproject.toml
+
 # V0.3.4
 - Add pytest.ini file
 
